@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dilekçe Oluştur</title>
+  <style>
+    body {
+      font-family: Calibri, "Times New Roman", serif;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 6px;
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+ table, th, td {
+  border: 1px solid black;
+  padding: 10px;
+}
+
+th {
+  text-align: center; /* başlıklar ortalı kalabilir istersen */
+}
+
+td {
+  text-align: center; /* içerikler sola yaslı olur */
+}
+
+    .letter-section {
+      display: none;
+      margin-top: 40px;
+      padding: 40px;
+      background: white;
+      border: none;
+    }
+    .center-text {
+      text-align: center;
+      margin: 0;
+      line-height: 1.1;
+    }
+    .left-text {
+      text-align: justify;
+      margin-top: 20px;
+      white-space: pre-line;
+    }
+    .download-button {
+      display: none;
+      margin-top: 20px;
+    }
+    .ders-item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+      background-color: #fafafa;
+    }
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      .letter-section, .letter-section * {
+        visibility: visible;
+      }
+      .letter-section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 210mm;
+        height: 297mm;
+        background: white !important;
+        padding: 40px;
+        margin: 0;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      .download-button {
+        display: none !important;
+      }
+    }
+    .logo-image {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 20px;
+      max-width: 80px;
+      height: auto;
+    }
+    .tarih-sag {
+      text-align: right;
+      margin: 0;
+      font-size: 16px;
+    }
+    #tarihYeri,
+    #imzaAlani {
+      display: none;
+    }
+    .alt-kisim {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px; /* İki kolon arası boşluk */
+      margin-top: 30px;
+    }
+    .sol-metni {
+      flex: 1;
+      max-width: 50%;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+    .sag-tablo {
+      flex: 1;
+      max-width: 50%;
+    }
+    .sag-tablo table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .sag-tablo td {
+      border: 1px solid black;
+      padding: 10px;
+      height: 100px;
+    }
+ #dersTablosu {
+  margin-top: 5px !important;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Çakışan Dersler İçin Mazeret Sınavı Talep Dilekçesi Oluşturma</h2>
+    <form id="dilekceForm">
+      <label>Adınız:</label>
+      <input type="text" id="ad" required />
+      <label>Soyadınız:</label>
+      <input type="text" id="soyad" required />
+      <label>Öğrenci Numarası:</label>
+      <input type="text" id="numara" required />
+      
+      <label>YTÜ E-posta Kullanıcı Adınız:</label>
+      <div style="display: flex; align-items: center;">
+        <input type="text" id="emailUser" required pattern="^[^@]+$" placeholder="kullaniciadi" style="flex: 1;" />
+        <span style="margin-left: 5px;">@std.yildiz.edu.tr</span>
+      </div>
+
+      <label>Cep Telefonu:</label>
+      <input type="text" id="telefon" required />
+      <label>Açıklama yazınız:</label>
+      <textarea id="mazeret" rows="3" required></textarea>
+      <label>Bölümünüzü Seçiniz:</label>
+      <select id="bolumSelect" required>
+        <option value="MATEMATİK BÖLÜM BAŞKANLIĞINA">MATEMATİK</option>
+        <option value="FİZİK BÖLÜM BAŞKANLIĞINA">FİZİK</option>
+        <option value="KİMYA BÖLÜM BAŞKANLIĞINA">KİMYA</option>
+        <option value="İSTATİSTİK BÖLÜM BAŞKANLIĞINA">İSTATİSTİK</option>
+        <option value="MOLEKÜLER BİYOLOJİ VE GENETİK BÖLÜM BAŞKANLIĞINA">MOLEKÜLER BİYOLOJİ VE GENETİK</option>
+        <option value="TÜRK DİLİ VE EDEBİYATI BÖLÜM BAŞKANLIĞINA">TÜRK DİLİ VE EDEBİYATI</option>
+        <option value="BATI DİLLERİ VE EDEBİYATLARI BÖLÜM BAŞKANLIĞINA">BATI DİLLERİ VE EDEBİYATLARI</option>
+      </select>
+
+      <h3>Çakışma Nedeniyle Sınavına Girdiğim ve Giremediğim Dersler</h3>
+      <div id="dersListesi"></div>
+      <button type="button" onclick="dersEkle()">➕ Ders Ekle</button>
+
+    
+
+
+      <br><br>
+      <button type="submit">Dilekçeyi Oluştur</button>
+    </form>
+
+    <div class="letter-section" id="dilekceOutput">
+      <img src="https://ytumat.github.io/mazeret_sinav_talebi_dilekcesi/logo.png" alt="Üniversite Logosu" class="logo-image" crossorigin="anonymous" />
+      <p class="tarih-sag" id="ustTarihYazisi"></p><br>
+      <p class="center-text" style="font-weight: bold;">FEN-EDEBİYAT FAKÜLTESİ</p>
+      <p id="bolumYazisi" class="center-text" style="font-weight: bold;"></p>
+      <p class="center-text" style="font-style: italic;margin-bottom: 1cm;">(Çakışan Dersler İçin Mazeret Sınav Talep Formu)</p>
+
+      <p> Bölümünüz <strong><span id="numaraYazisi"></span></strong> numaralı öğrencisiyim. Sınavına çakışma nedeniyle giremediğim, aşağıdaki tabloda yazılı derslerim için mazeret sınav hakkı tanınmasını arz ederim.<br><br>
+      <span id="mazeretMetni" style="text-align: left;"></span></p>
+
+      <p id="adSoyadYazisi" style="text-align: right; margin-top: 40px;"></p>
+      <p id="telefonYazisi" style="text-align: left; margin-top: 10px;"></p>
+      <p id="emailYazisi" style="text-align: left; margin-top: 2px;"></p><br>
+
+      <table id="cakisanTablo">
+        <thead>
+          <tr>
+            <th colspan="2">Çakışan dersleri aşağıya karşılıklı olarak yazınız</th>
+          </tr>          
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <br><br><br>
+<!-- <div class="left-text" id="ogrenciBilgileri"></div> -->
+
+<!-- <p style="margin: 0 0 0 0; text-align: center;"><strong>MAZERET SINAVI TALEP EDİLEN DERSLER</strong></p> -->
+
+
+<p style="text-align: center; margin: 0 0 5px 0;"><strong>MAZERET SINAVI TALEP EDİLEN DERSLER</strong></p>
+
+        <table id="dersTablosu">
+        <thead>
+          <tr>
+            <th>DERSİN KODU</th>
+            <th>DERSİN ADI</th>
+            <th>SINAV TARİHİ</th>
+            <th>DERSİ VEREN ÖĞRETİM ÜYESİNİN ADI</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="alt-kisim">
+        <div class="sol-metni">
+          <p><br><strong>Ek:</strong> 2 (İki) Bölüme ait sınav programı.</p>
+        </div>
+        <div class="sag-tablo">
+          <table>
+            <tr>
+              <td style="border: 1px solid black; padding: 10px; height: 100px;"> <br>Bölüm Başkanı</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <p style="text-align: right;" id="tarihYeri"></p>
+      <p style="text-align: right;" id="imzaAlani">İmza: _________</p>
+      <p id="epostaAltMetin" style="text-align: center; margin-top: 40px; font-style: italic;"></p>
+
+      <div class="download-button" id="downloadBtnDiv">
+        <button id="downloadBtn">📥 PDF Olarak İndir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- jsPDF ve html2canvas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <script>
+    function formatDersAdi(dersAdi) {
+      if (!dersAdi) return "";
+      const turkishToLower = (str) =>
+        str.replace(/İ/g, "i").replace(/I/g, "ı")
+           .replace(/Ş/g, "ş").replace(/Ğ/g, "ğ")
+           .replace(/Ü/g, "ü").replace(/Ö/g, "ö")
+           .replace(/Ç/g, "ç").toLowerCase();
+      const turkishCapitalize = (str) =>
+        str.charAt(0).toLocaleUpperCase("tr-TR") + turkishToLower(str.slice(1));
+      return dersAdi
+        .split(" ")
+        .map(kelime => turkishCapitalize(kelime))
+        .join(" ");
+    }
+
+    function formatDersKodu(kod) {
+      if (!kod) return "";
+      const firstThree = kod.slice(0, 3).toUpperCase();
+      const rest = kod.slice(3).toLowerCase();
+      return firstThree + rest;
+    }
+
+    function dersEkle() {
+      const container = document.getElementById("dersListesi");
+      const div = document.createElement("div");
+      div.className = "ders-item ders-ekle";
+      div.innerHTML = `
+        <label>Çakışan Derslerden Sınavına <strong>Girdiğim</strong> Dersin Kodu-Adı:</label><input type="text" name="ders1kod" required />
+        <label><strong>Mazeret Sınavı</strong> Talep Ettiğim Dersin Kodu:</label><input type="text" name="ders2kod" required />
+        <label><strong>Mazeret Sınavı</strong> Talep Ettiğim Dersin Adı:</label><input type="text" name="ders2ad" required />
+        <label> <strong>Mazeret Sınavı</strong> Talep Ettiğim Dersin Öğretim Üyesi:</label><input type="text" name="ders2hoca" required />
+        <label>Çakışma Nedeniyle Sınavına Giremediğim Dersin Sınav Tarihi:</label><input type="text" name="sınavtarih" required placeholder="gg.aa.yyyy" />
+      `;
+      container.appendChild(div);
+    }
+
+    
+    window.onload = () => {
+      dersEkle();
+      };
+
+    document.getElementById("dilekceForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const ad = document.getElementById("ad").value.trim();
+      const soyad = document.getElementById("soyad").value.trim();
+      const numara = document.getElementById("numara").value.trim();
+      const telefon = document.getElementById("telefon").value.trim();
+      const mazeret = document.getElementById("mazeret").value.trim();
+      const bolum = document.getElementById("bolumSelect").value;
+      const emailUser = document.getElementById("emailUser").value.trim();
+      const email = `${emailUser}@std.yildiz.edu.tr`;
+
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString("tr-TR");
+      window.adSoyad = `${ad}_${soyad}`.replace(/\s+/g, "_");
+
+      document.getElementById("ustTarihYazisi").innerText = `Tarih: ${formattedDate}`;
+      document.getElementById("tarihYeri").innerText = `Tarih: ${formattedDate}`;
+      document.getElementById("bolumYazisi").innerText = bolum;
+      document.getElementById("numaraYazisi").innerText = numara;
+      document.getElementById("mazeretMetni").innerHTML = `Açıklama: ${mazeret}`;
+      document.getElementById("adSoyadYazisi").innerHTML = `<strong>Adı‑Soyadı:</strong> ${ad} ${soyad}`;
+      document.getElementById("telefonYazisi").innerHTML = `<strong>Cep Tel:</strong> ${telefon}`;
+      document.getElementById("emailYazisi").innerHTML = `<strong>E-posta:</strong> ${email}`;
+      document.getElementById("epostaAltMetin").innerText = `Bu belge ${email} adresinden bölüme iletilmiştir.`;
+
+      // Ders tablosu
+const dersler = document.querySelectorAll("#dersListesi .ders-ekle");
+ const dersTbody = document.querySelector("#dersTablosu tbody");
+ dersTbody.innerHTML = "";
+
+const cakisanTbody = document.querySelector("#cakisanTablo tbody");
+cakisanTbody.innerHTML = "";
+
+dersler.forEach(ders => {
+       
+        const ders1 = formatDersKodu(ders.querySelector("input[name='ders1kod']").value);
+        const kod = formatDersKodu(ders.querySelector("input[name='ders2kod']").value);
+        const adders = formatDersAdi(ders.querySelector("input[name='ders2ad']").value);
+        const hoca = ders.querySelector("input[name='ders2hoca']").value;
+        const tarih = ders.querySelector("input[name='sınavtarih']").value;
+
+     
+          
+        const row1 = document.createElement("tr");
+        row1.innerHTML = `<td>${kod}</td><td>${adders}</td><td>${tarih}</td><td>${hoca}</td>`;
+        dersTbody.appendChild(row1);
+     
+// Çakışan Ders tablosu
+      
+      
+        const row2 = document.createElement("tr");
+        row2.innerHTML = `<td>${ders1}</td><td>${kod} ${adders}</td>`;
+        cakisanTbody.appendChild(row2);
+      });
+
+
+
+
+      
+      document.getElementById("dilekceOutput").style.display = "block";
+      document.getElementById("downloadBtnDiv").style.display = "block";
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", function () {
+      const img = document.querySelector(".logo-image");
+      const downloadBtnDiv = document.getElementById("downloadBtnDiv");
+      downloadBtnDiv.style.visibility = "hidden";
+
+      const startPdf = () => {
+        html2canvas(document.getElementById("dilekceOutput"), { scale: 3, useCORS: true }).then(canvas => {
+          const imgData = canvas.toDataURL("image/png");
+          const pdf = new window.jspdf.jsPDF("p", "mm", "a4");
+          const pdfWidth = 210;
+          const pdfHeight = 297;
+          const pxPerMm = canvas.width / pdfWidth;
+          const imgHeight = canvas.height / pxPerMm;
+
+          let renderHeight = imgHeight;
+          let renderWidth = pdfWidth;
+
+          if (imgHeight > pdfHeight) {
+            const scale = pdfHeight / imgHeight;
+            renderHeight = pdfHeight;
+            renderWidth = pdfWidth * scale;
+          }
+
+          pdf.addImage(imgData, "PNG", 0, 0, renderWidth, renderHeight);
+          pdf.setFont("helvetica", "italic");
+          pdf.setFontSize(8);
+          pdf.setTextColor(150);
+          pdf.text("(Form No: FR-0606; Revizyon Tarihi:14.01.2014; Revizyon No:00)", 10, 290);
+
+          pdf.save(`${window.adSoyad || "dilekce"}.pdf`);
+          downloadBtnDiv.style.visibility = "visible";
+        });
+      };
+
+      if (!img.complete) {
+        img.onload = startPdf;
+        img.onerror = () => {
+          alert("Logo yüklenemedi!");
+          startPdf();
+        };
+      } else {
+        startPdf();
+      }
+    });
+  </script>
+</body>
+</html>
