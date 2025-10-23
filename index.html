@@ -2,6 +2,8 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Dilekçe Oluştur</title>
   <style>
     body {
@@ -142,6 +144,53 @@ td {
     }
  #dersTablosu {
   margin-top: 5px !important;
+}
+@media (max-width: 768px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 15px;
+    max-width: 100%;
+    box-shadow: none;
+  }
+
+  input, select, textarea, button {
+    font-size: 14px;
+    width: 100%;
+  }
+
+  table, th, td {
+    font-size: 12px;
+    word-break: break-word;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .alt-kisim {
+    flex-direction: column;
+  }
+
+  .sag-tablo, .sol-metni {
+    max-width: 100%;
+  }
+
+  .logo-image {
+    max-width: 60px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .center-text {
+    font-size: 14px;
+  }
 }
 
   </style>
@@ -412,4 +461,5 @@ dersler.forEach(ders => {
   </script>
 </body>
 </html>
+
 
