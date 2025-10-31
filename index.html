@@ -249,6 +249,8 @@ td {
       <span id="mazeretMetni" style="text-align: left;"></span></p>
 
       <p id="adSoyadYazisi" style="text-align: right; margin-top: 40px;"></p>
+
+ <p id="epostaAltMetin" style="text-align: center; margin-top: 40px; color:red; font-style: italic;"></p>
       <p id="telefonYazisi" style="text-align: left; margin-top: 10px;"></p>
       <p id="emailYazisi" style="text-align: left; margin-top: 2px;"></p><br>
 
@@ -288,7 +290,7 @@ td {
         <div class="sag-tablo">
           <table>
             <tr>
-              <td style="border: 1px solid black; padding: 10px; height: 100px;"> <br>Bölüm Başkanı</td>
+             <td id="bolumBaskani" style="height: 100px;"><br>Bölüm Başkanı</td>
             </tr>
           </table>
         </div>
@@ -296,7 +298,7 @@ td {
 
       <p style="text-align: right;" id="tarihYeri"></p>
       <p style="text-align: right;" id="imzaAlani">İmza: _________</p>
-      <p id="epostaAltMetin" style="text-align: center; margin-top: 40px; font-style: italic;"></p>
+     
 
       <div class="download-button" id="downloadBtnDiv">
         <button id="downloadBtn">📥 PDF Olarak İndir</button>
@@ -398,6 +400,23 @@ dersler.forEach(ders => {
         row1.innerHTML = `<td>${kod}</td><td>${adders}</td><td>${tarih}</td><td>${hoca}</td>`;
         dersTbody.appendChild(row1);
      
+
+// Dropdown değiştiğinde otomatik güncelle
+document.getElementById("bolumSelect").addEventListener("change", bolumBaskaniGuncelle);
+
+// ⭐ Form gönderildiğinde tabloyu doldur ve başkanı güncelle
+    document.getElementById("dilekceForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      bolumBaskaniGuncelle(); // tabloya başkanı yaz
+      document.getElementById("dilekceOutput").style.display = "block";
+    });
+
+
+
+
+
+
+
 // Çakışan Ders tablosu
       
       
@@ -407,9 +426,26 @@ dersler.forEach(ders => {
       });
 
 
+// Bölüm başkanlarını eşle
+const baskanlar = {
+  "MATEMATİK BÖLÜM BAŞKANLIĞINA": "Matematik Bölüm Başkanı",
+  "FİZİK BÖLÜM BAŞKANLIĞINA": "Fizik Bölüm Başkanı",
+  "KİMYA BÖLÜM BAŞKANLIĞINA": "Kimya Bölüm Başkanı",
+  "İSTATİSTİK BÖLÜM BAŞKANLIĞINA": "İstatistik Bölüm Başkanı",
+  "MOLEKÜLER BİYOLOJİ VE GENETİK BÖLÜM BAŞKANLIĞINA": "Moleküler Biyoloji ve Genetik Bölüm Başkanı",
+  "TÜRK DİLİ VE EDEBİYATI BÖLÜM BAŞKANLIĞINA": "Türk Dili ve Edebiyatı Bölüm Başkanı",
+  "BATI DİLLERİ VE EDEBİYATLARI BÖLÜM BAŞKANLIĞINA": "Batı Dilleri ve Edebiyatları Bölüm Başkanı"
+};
 
+// ⭐ Bölüm başkanını tabloya yazdır
+    function bolumBaskaniGuncelle() {
+      const bolum = document.getElementById("bolumSelect").value;
+      const baskanCell = document.getElementById("bolumBaskani");
+      baskanCell.innerText = baskanlar[bolum] || "Bölüm Başkanı";
+    }
 
-      
+      bolumBaskaniGuncelle();
+
       document.getElementById("dilekceOutput").style.display = "block";
       document.getElementById("downloadBtnDiv").style.display = "block";
     });
@@ -461,5 +497,4 @@ dersler.forEach(ders => {
   </script>
 </body>
 </html>
-
 
