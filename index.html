@@ -473,7 +473,9 @@ const baskanlar = {
             renderWidth = pdfWidth * scale;
           }
 
-          pdf.addImage(imgData, "PNG", 0, 0, renderWidth, renderHeight);
+          const xOffset = (pdfWidth - renderWidth) / 2;
+const yOffset = (pdfHeight - renderHeight) / 2;
+pdf.addImage(imgData, "PNG", xOffset, yOffset, renderWidth, renderHeight);
           pdf.setFont("helvetica", "italic");
           pdf.setFontSize(8);
           pdf.setTextColor(150);
@@ -497,4 +499,5 @@ const baskanlar = {
   </script>
 </body>
 </html>
+
 
